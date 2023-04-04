@@ -73,7 +73,7 @@ const addQueue = async (requestBody) => {
 
 const listQueue = async () => {
    try {
-      const result = await Queue.find({});
+      const result = await Queue.find({ serveDone: false});
       
       if(result.length === 0) {
           return false;
@@ -90,18 +90,22 @@ const serveQueue = async (queueID, reqBody) => {
 
        console.log(reqBody);
       const result = await Queue.findByIdAndUpdate(queueID, {
+            queueID: reqBody.queueID,
             serve: reqBody.serve,
        })
 
        if (!result) {
-         return `The serve updated is failed`
+         return {
+            message: 'Serve is not process',
+            result: false
+        }
        }
    
        result.password = undefined
    
        return {
          message: 'Server update successfully',
-         user: result
+         result: true
        }
    } catch (error) {
       console.log('Error: ', error);
@@ -122,9 +126,37 @@ const serveQueueNow = async () => {
    }
 }
 
+const serveDone = async (userID, reqBody) => {
+   try {
+      console.log(reqBody);
+
+      const result = await Queue.findByIdAndUpdate(userID, {
+            serve: reqBody.serve,
+            serveDone: reqBody.serveDone,
+       })
+
+       if (!result) {
+         return {
+            message: 'Serve done is not process',
+            result: false
+        }
+       }
+   
+       result.password = undefined
+   
+       return {
+         message: 'Server done successfully',
+         result: true
+       }
+   } catch (error) {
+      console.log('Error: ', error);
+   }
+}
+
 module.exports = {
     addQueue,
     listQueue,
     serveQueue,
-    serveQueueNow, 
+    serveQueueNow,
+    serveDone, 
 }

@@ -19,6 +19,12 @@ const queueSchema = new mongoose.Schema({
         default: '',
      },
 
+     queueID: {
+         type: String,
+         trim: true,
+         default: '',
+     },
+
      serve: {
         type: Boolean,
         default: false,

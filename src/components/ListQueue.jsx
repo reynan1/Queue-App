@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { BiUser, BiMobile, BiGroup, BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs"
@@ -11,70 +12,49 @@ import Dropdown from 'react-bootstrap/Dropdown';
 const ListQueue = () => {
   const [queueData, setQueueData] = useState([]);
   const [getServeNow, setGetServeNow] = useState([]);
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState();
   const [isServe, setIsServe] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [idNumber, setIdNumber] = useState([]);
   
-   // fetch the queue data that serve is equal to true
-  const chechServeTrue = async () => {
-      try {
-
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/queue/serveNow`, {
-          headers: {
-            Accept: 'application/json',
-          },
-        }); 
-
-        if(response.data) {
-          setDisabled(response.data.serve);
-          console.log("data server: " + isDisabled);
-        } else {
-          setDisabled(false);
-          console.log("data server: " + isDisabled);
-        }
-          
-        const serveNowArray = [response.data];
-
-         setGetServeNow(serveNowArray.map( data => {
-            return (
-                data && (
-                 <div key={data._id}>
-                    <div>
-                        <div className='mt-2 d-flex justify-content-between '>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
-                        </div>
-                        <div  className='d-flex justify-content-between '>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Mobile Number</span>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.mobileNo}</span>
-                        </div>
-                        <div  className='d-flex justify-content-between '>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Number of People</span>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.personCount}</span>
-                        </div>
-                    </div>
-                    <div className='data-footer'>
-                        <div className='d-flex justify-content-between '>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Queued</span>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:00 AM</span>
-                        </div>
-                        <div className='d-flex justify-content-between '>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Served</span>
-                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:16 AM</span>
-                        </div>
-                    </div>
-                </div>
-              )
-            )
-         } ))
-      } catch (error) {
-        console.log(error)
-      }
-  }
-
-
   console.log(isDisabled  + " disable value");
+
+  const serveDone = async (e,userID) => {
+    e.preventDefault();
+
+    try {
+
+     console.log(userID + " my id user ");
+
+     const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serveDone/${userID}`, {
+        serve: false,
+        serveDone: true,
+      })
+
+      if(response.data.result === false) {
+        Swal.fire({
+           title: 'Server Error',
+           icon: 'error',
+           text: `server error`,
+        })
+      }
+
+      if(response.status === 200 && response.data.result === true) {
+        Swal.fire({
+          title: 'Serve queue number is done',
+          icon: 'success',
+          text: `serve is done`
+        })
+
+       
+      }
+
+    
+
+    } catch(error) {
+      console.log(`data result: ${error}`);
+    }
+ }
   
   useEffect(() => {
     async function  chechServeTrue () {
@@ -96,12 +76,29 @@ const ListQueue = () => {
           
         const serveNowArray = [response.data];
 
-         setGetServeNow(serveNowArray.map( data => {
+         setGetServeNow(serveNowArray.map( (data, index) => {
             return (
               
-              data && (
-                <div key={data._id}>
+              data ? (
+                <div key={index}>
                    <div>
+                      <p style={{ textTransform: "uppercase", color: "#A3A1B5", fontWeight: "700", textAlign: "center", fontSize: "0.8rem" }}>queue number</p>
+                      <p style={{ textTransform: "uppercase", color: "#191444", fontWeight: "700", textAlign: "center", fontSize: "2.2rem" }}>{data.queueID}</p>
+                      <div className='d-flex justify-content-center'>
+                        <p style={{ 
+                                  textTransform: "uppercase", 
+                                  color: "#A3A1B5", 
+                                  fontWeight: "400", 
+                                  textAlign: "center", 
+                                  fontSize: "0.7rem", 
+                                  border: "1px solid #A3A1B5", 
+                                  borderRadius: "5px", 
+                                  textAlign: "center",
+                                  width: "5rem",
+                                }}>Walk-in</p>
+                      </div>
+                   </div>
+                   <div className='mt-5'>
                        <div className='mt-2 d-flex justify-content-between '>
                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
@@ -128,23 +125,27 @@ const ListQueue = () => {
 
                    <div className='mt-5  data-footer' style={{ borderTop: "2px solid #F3F6FC", paddingTop: "2rem" }}>
                        <div className=' d-flex justify-content-around '>
-                           <button>
+                           <button style={{ width: "3rem", backgroundColor: 'transparent', border: "2px solid #A3A1B5", color: "#A3A1B5", borderRadius: "5px" }}>
                              <BiDotsVerticalRounded />
                            </button> 
-                           <button className='data-footer-btn'>
-                              <RxSpeakerLoud style={{ fontSize: "1.2rem" }}/>
+                           <button className='data-footer-btn' style={{backgroundColor: 'transparent', border: "2px solid #A3A1B5", color: "#A3A1B5", borderRadius: "5px", fontWeight: 700, }}>
+                              <RxSpeakerLoud className='data-footer-icon' style={{ fontSize: "1.2rem" }}/>
                               <span style={{ textTransform: "uppercase" }}>notify</span>
                            </button>
 
-                           <button className='data-footer-btn'>
-                              <BsCheck2 style={{ fontSize: "1.2rem" }}/>
+                           <button 
+                              className='data-footer-btn'  
+                              style={{backgroundColor: 'transparent', border: "2px solid #1E9032", color: "#1E9032", borderRadius: "5px", fontWeight: 700,  }}
+                              onClick={(e) => serveDone(e, data._id)}
+                              >
+                              <BsCheck2 className='data-footer-icon' style={{ fontSize: "1.2rem" }}/>
                               <span style={{ textTransform: "uppercase" }}>done</span>
                            </button>
                        </div>
                    </div>
                </div>
-              )
-            )
+              ) : (<h1 style={{ fontSize: "1.5rem", textAlign: "center", color: "#A3A1B5", }}> No serving queue id number </h1>)
+            ) 
          } ))
       } catch (error) {
         console.log(error)
@@ -165,15 +166,34 @@ const ListQueue = () => {
 
 
         // click the fetch queue data
-      const handleClick = async (e, data) => {
+      const handleClick = async (e, data, idNumber) => {
         e.preventDefault();
 
+        console.log(idNumber + "my id number");
         try {
+
           const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serve/${data._id}`, {
+            queueID: idNumber,
             serve: true,
           })  
           
-           console.log(response.data.user);
+          if(response.data.result === false) {
+            Swal.fire({
+               title: 'Server Error',
+               icon: 'error',
+               text: `server error`,
+            })
+        }
+
+        if(response.status === 200 && response.data.result === true) {
+           Swal.fire({
+             title: 'Queue id number is now serve',
+             icon: 'success',
+             text: `serve is now ongoing`
+           })
+
+    
+          }
         } catch(error) {
           console.log(error);
         }
@@ -181,10 +201,8 @@ const ListQueue = () => {
       } 
 
        setQueueData(response.data.map((data, index) => {
-          setIdNumber([`A0${index+1}`]);
-          setUserId(data._id) 
+        
          return (
-
           
               <div key={data._id}>
                 <MDBRow className="table-body-data p-3 mt-3"> 
@@ -226,10 +244,11 @@ const ListQueue = () => {
                         </Dropdown>    
                   </MDBCol>
                   <MDBCol className="list-queue-data  d-flex justify-content-center align-items-center" md='1'>
-                      { console.log(isDisabled + " data1 ") }
+
+                    
                       <button 
                         className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
-                        onClick={ (e) => handleClick(e, data)}
+                        onClick={ (e) => handleClick(e, data, `A0${index+1}`)}
                         disabled={isDisabled ? true : false}
                         >
                         <BsArrowRight style={{ color: '#A3A1B5', }}/>
@@ -245,9 +264,6 @@ const ListQueue = () => {
     }
 
   }
-
-
-  console.log(idNumber + " data id :: ");
 
   useEffect(() => {
     fetchData(isDisabled);
@@ -281,7 +297,7 @@ const ListQueue = () => {
                </MDBRow>
             </div>
 
-            <div className='list-queue-tableBody mt-3'>
+            <div className='list-queue-tableBody mt-0'>
              {queueData}
             </div>
             <div className='list-queue-tableFooter p-3 mt-3 d-flex justify-content-between'>
@@ -299,9 +315,6 @@ const ListQueue = () => {
                 <HiInformationCircle /><span style={{  color: "#74728F", fontWeight: "400", fontSize: "0.8rem", lineHeight: "1.8rem"   }}>Finish serving a queue before you can serve another one</span> 
             </div>
             <div className='mt-3 p-3 current-serving-body'>
-                <p style={{ textTransform: "uppercase", color: "#A3A1B5", fontWeight: "700", textAlign: "center", }}>queue number</p>
-                <p style={{ textTransform: "uppercase", color: "#A3A1B5", fontWeight: "700", textAlign: "center", }}>{idNumber}</p>
-
                 <div className='current-serving-body-user'>
                      { getServeNow }       
                       { console.log(getServeNow) }

@@ -33,7 +33,6 @@ const DisplayPayment = () => {
     }
 
     // submit the data on form to mongodb atlas
-
     const handleSubmit = async (e) => {
        e.preventDefault();
 
@@ -64,6 +63,7 @@ const DisplayPayment = () => {
            setName('');
 
            setShow(false);
+     
         }
 
 

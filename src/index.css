@@ -220,7 +220,7 @@ header {
 
 .list-queue-tableBody {
   overflow-y: scroll;
-  height: 60% !important;
+  height: 32rem !important;
 }
 
 .list-queue-tableBody::-webkit-scrollbar {
@@ -259,4 +259,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.data-footer-icon {
+  stroke-width: 1 !important;
 }
