@@ -8,10 +8,48 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 const ListQueue = () => {
   const [queueData, setQueueData] = useState([]);
+  const [getServeNow, setGetServeNow] = useState([]);
   const [userId, setUserId] = useState('');
-  const [getServeData, setGetServeData] = useState([]);
+  const [isServe, setIsServe] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
   const [idNumber, setIdNumber] = useState([]);
   
+  const chechServeTrue = async () => {
+      try {
+
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/queue/serveNow`, {
+          headers: {
+            Accept: 'application/json',
+          },
+        }); 
+
+          
+        const serveNowArray = [response.data];
+
+         setGetServeNow(serveNowArray.map( data => {
+            return (
+              <>
+                 <div>
+                     <div className='mt-2 d-flex justify-content-between '>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
+                     </div>
+                     <div  className='d-flex justify-content-between '>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Mobile Number</span>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.mobileNo}</span>
+                     </div>
+                     <div  className='d-flex justify-content-between '>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Number of People</span>
+                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.personCount}</span>
+                     </div>
+                 </div>
+              </>
+            )
+         } ))
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
 
   const fetchData = async () => {
@@ -25,24 +63,17 @@ const ListQueue = () => {
       const handleClick = async (e, data) => {
         e.preventDefault();
 
-
-
         try {
           const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serve/${data._id}`, {
             serve: true,
           })  
           
-          setGetServeData(response.data);
-
-          console.log(response);
+           console.log(response.data.user);
         } catch(error) {
           console.log(error);
         }
        
       } 
-
-
-
 
        setQueueData(response.data.map((data, index) => {
           setIdNumber(`A0${index+1}`);
@@ -61,15 +92,15 @@ const ListQueue = () => {
                         <div className=''>
                             <div>
                                 <BiUser />
-                                <span>{data.name}</span>
+                                <span className='list-queue-data-span'>{data.name}</span>
                             </div> 
                             <div>
                                 <BiMobile />
-                                <span>+(63) {data.mobileNo}</span>
+                                <span className='list-queue-data-span'>+(63) {data.mobileNo}</span>
                             </div> 
                             <div>
                                 <BiGroup />
-                                <span>{data.personCount}</span>
+                                <span className='list-queue-data-span'>{data.personCount}</span>
                             </div> 
                         </div>
                   </MDBCol>
@@ -78,7 +109,7 @@ const ListQueue = () => {
                   </MDBCol>
                   <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='1'>
                        <Dropdown align="end" drop="up">
-                          <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={data.serve}>
+                          <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={isDisabled}>
                              <BiDotsVerticalRounded  style={{ color: '#A3A1B5', }}/>
                           </Dropdown.Toggle>
 
@@ -93,7 +124,7 @@ const ListQueue = () => {
                       <button 
                         className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
                         onClick={ (e) => handleClick(e, data)}
-                        disabled={data.serve}
+                        disabled={isDisabled}
                         >
                         <BsArrowRight style={{ color: '#A3A1B5', }}/>
                       </button>
@@ -112,10 +143,11 @@ const ListQueue = () => {
 
   useEffect(() => {
     fetchData();
+    chechServeTrue();
 
   }, []);
-  console.log(getServeData + " name ");
- console.log(idNumber);
+
+
 
 
   return (
@@ -169,8 +201,8 @@ const ListQueue = () => {
 
                 <div className='current-serving-body-user'>
 
-                  {console.log(getServeData)}           
-
+                     { getServeNow }       
+                      { console.log(getServeNow) }
                 </div>
             </div>
         </MDBCol>

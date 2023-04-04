@@ -187,6 +187,12 @@ header {
   text-align: center !important;
 }
 
+.list-queue-data-span {
+  font-size: 0.8rem !important;
+  font-weight: 400;
+  margin-left: 0.5rem !important;
+}
+
 .list-queue-header,.current-serving-header {
   background-color: #fff !important;
   border: 1px solid rgba(163, 161, 181, 0.3);

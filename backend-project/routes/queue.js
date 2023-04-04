@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addQueue, listQueue, serveQueue } = require('../controller/queueController')
+const { addQueue, listQueue, serveQueue, serveQueueNow } = require('../controller/queueController')
 
 // router post method add queue function
 router.post('/addOrder', (request, response) => {
@@ -11,6 +11,12 @@ router.post('/addOrder', (request, response) => {
 
 router.get('/list', (request, response) => {
     listQueue().then(
+        resultFromController => response.send(resultFromController),
+    );
+})
+
+router.get('/serveNow', (request, response) => {
+    serveQueueNow().then(
         resultFromController => response.send(resultFromController),
     );
 })

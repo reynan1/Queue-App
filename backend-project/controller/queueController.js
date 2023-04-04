@@ -108,8 +108,23 @@ const serveQueue = async (queueID, reqBody) => {
    }
 }
 
+const serveQueueNow = async () => {
+   try {
+      const result = await Queue.findOne({ serve: true })
+
+      if(result.length === 0) {
+          return false;
+      }
+
+      return result;
+   } catch (error) {
+      console.log('Error: ', error);
+   }
+}
+
 module.exports = {
     addQueue,
     listQueue,
     serveQueue,
+    serveQueueNow, 
 }
