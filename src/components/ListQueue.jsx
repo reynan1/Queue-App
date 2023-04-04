@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
-import { BiUser, BiMobile, BiGroup,BiDotsVerticalRounded } from "react-icons/bi";
+import { BiUser, BiMobile, BiGroup, BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs"
 import { HiInformationCircle } from 'react-icons/hi';
+import { RxSpeakerLoud } from 'react-icons/rx';
+import { BsCheck2 } from 'react-icons/bs'
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const ListQueue = () => {
@@ -14,6 +16,7 @@ const ListQueue = () => {
   const [isDisabled, setDisabled] = useState(false);
   const [idNumber, setIdNumber] = useState([]);
   
+   // fetch the queue data that serve is equal to true
   const chechServeTrue = async () => {
       try {
 
@@ -23,27 +26,46 @@ const ListQueue = () => {
           },
         }); 
 
+        if(response.data) {
+          setDisabled(response.data.serve);
+          console.log("data server: " + isDisabled);
+        } else {
+          setDisabled(false);
+          console.log("data server: " + isDisabled);
+        }
           
         const serveNowArray = [response.data];
 
          setGetServeNow(serveNowArray.map( data => {
             return (
-              <>
-                 <div>
-                     <div className='mt-2 d-flex justify-content-between '>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
-                     </div>
-                     <div  className='d-flex justify-content-between '>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Mobile Number</span>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.mobileNo}</span>
-                     </div>
-                     <div  className='d-flex justify-content-between '>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Number of People</span>
-                        <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.personCount}</span>
-                     </div>
-                 </div>
-              </>
+                data && (
+                 <div key={data._id}>
+                    <div>
+                        <div className='mt-2 d-flex justify-content-between '>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
+                        </div>
+                        <div  className='d-flex justify-content-between '>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Mobile Number</span>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.mobileNo}</span>
+                        </div>
+                        <div  className='d-flex justify-content-between '>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Number of People</span>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.personCount}</span>
+                        </div>
+                    </div>
+                    <div className='data-footer'>
+                        <div className='d-flex justify-content-between '>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Queued</span>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:00 AM</span>
+                        </div>
+                        <div className='d-flex justify-content-between '>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Served</span>
+                            <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:16 AM</span>
+                        </div>
+                    </div>
+                </div>
+              )
             )
          } ))
       } catch (error) {
@@ -52,7 +74,88 @@ const ListQueue = () => {
   }
 
 
-  const fetchData = async () => {
+  console.log(isDisabled  + " disable value");
+  
+  useEffect(() => {
+    async function  chechServeTrue () {
+      try {
+
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/queue/serveNow`, {
+          headers: {
+            Accept: 'application/json',
+          },
+        }); 
+
+        if(response.data) {
+          setDisabled(response.data.serve);
+          console.log("data server: " + isDisabled);
+        } else {
+          setDisabled(false);
+          console.log("data server: " + isDisabled);
+        }
+          
+        const serveNowArray = [response.data];
+
+         setGetServeNow(serveNowArray.map( data => {
+            return (
+              
+              data && (
+                <div key={data._id}>
+                   <div>
+                       <div className='mt-2 d-flex justify-content-between '>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Customer Name</span>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.name}</span>
+                       </div>
+                       <div  className='d-flex justify-content-between '>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Mobile Number</span>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.mobileNo}</span>
+                       </div>
+                       <div  className='d-flex justify-content-between '>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Number of People</span>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>{data.personCount}</span>
+                       </div>
+                   </div>
+                   <div className='mt-5  data-footer' style={{ borderTop: "2px solid #F3F6FC", paddingTop: "2rem" }}>
+                       <div className='d-flex justify-content-between '>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Queued</span>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:00 AM</span>
+                       </div>
+                       <div className='d-flex justify-content-between '>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#74728F", letterSpacing: "0.5px" }}>Time Served</span>
+                           <span style={{ fontWeight: "400", fontSize: "0.9rem", color: "#191444", letterSpacing: "0.5px" }}>8:16 AM</span>
+                       </div>
+                   </div>
+
+                   <div className='mt-5  data-footer' style={{ borderTop: "2px solid #F3F6FC", paddingTop: "2rem" }}>
+                       <div className=' d-flex justify-content-around '>
+                           <button>
+                             <BiDotsVerticalRounded />
+                           </button> 
+                           <button className='data-footer-btn'>
+                              <RxSpeakerLoud style={{ fontSize: "1.2rem" }}/>
+                              <span style={{ textTransform: "uppercase" }}>notify</span>
+                           </button>
+
+                           <button className='data-footer-btn'>
+                              <BsCheck2 style={{ fontSize: "1.2rem" }}/>
+                              <span style={{ textTransform: "uppercase" }}>done</span>
+                           </button>
+                       </div>
+                   </div>
+               </div>
+              )
+            )
+         } ))
+      } catch (error) {
+        console.log(error)
+      }
+  }
+
+  chechServeTrue();
+  }, [])
+
+  // fetch the queue data
+  const fetchData = async (isDisabled) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/queue/list`, {
         headers: {
@@ -60,6 +163,8 @@ const ListQueue = () => {
         },
       }); 
 
+
+        // click the fetch queue data
       const handleClick = async (e, data) => {
         e.preventDefault();
 
@@ -76,7 +181,7 @@ const ListQueue = () => {
       } 
 
        setQueueData(response.data.map((data, index) => {
-          setIdNumber(`A0${index+1}`);
+          setIdNumber([`A0${index+1}`]);
           setUserId(data._id) 
          return (
 
@@ -121,10 +226,11 @@ const ListQueue = () => {
                         </Dropdown>    
                   </MDBCol>
                   <MDBCol className="list-queue-data  d-flex justify-content-center align-items-center" md='1'>
+                      { console.log(isDisabled + " data1 ") }
                       <button 
                         className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
                         onClick={ (e) => handleClick(e, data)}
-                        disabled={isDisabled}
+                        disabled={isDisabled ? true : false}
                         >
                         <BsArrowRight style={{ color: '#A3A1B5', }}/>
                       </button>
@@ -141,19 +247,16 @@ const ListQueue = () => {
   }
 
 
+  console.log(idNumber + " data id :: ");
+
   useEffect(() => {
-    fetchData();
-    chechServeTrue();
-
-  }, []);
-
-
-
+    fetchData(isDisabled);
+  }, [isDisabled]);
 
   return (
     <div className="mt-4">
       <MDBRow className="">
-        <MDBCol className="list-queue" md='7'>
+        <MDBCol className="list-queue" md='8'>
             <div className=" p-3  list-queue-header">
               <h3>on-going queue</h3>
               <p>List of all on-going customer queues</p>
@@ -186,7 +289,7 @@ const ListQueue = () => {
                 <span style={{fontWeight: "700", fontSize: "1rem", color: "#191444",}}>{queueData.length} Queues</span>
             </div>
         </MDBCol>
-        <MDBCol className="current-serving" size='6'  md='5'>
+        <MDBCol className="current-serving" size='6'  md='4'>
             <div className="current-serving-header p-3 ">
               <h3>current serving</h3>
               <p>Customer queues that are called and served</p>
@@ -200,7 +303,6 @@ const ListQueue = () => {
                 <p style={{ textTransform: "uppercase", color: "#A3A1B5", fontWeight: "700", textAlign: "center", }}>{idNumber}</p>
 
                 <div className='current-serving-body-user'>
-
                      { getServeNow }       
                       { console.log(getServeNow) }
                 </div>
