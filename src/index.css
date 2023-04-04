@@ -1,13 +1,232 @@
-body {
+*{
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+p,h1,h2,h3 {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body {
+  background-color:  #E5E5E5 !important;
+  font-family: "Inter", sans-serif !important;
+  
+}
+
+header {
+  background-color: #FFFFFF;
+}
+
+.web-icon {
+  font-size: 1.5rem;
+}
+
+.web-icon-large {
+  font-size: 3rem;
+  color: #74728F;
+}
+
+.logo-title-h {
+  font-size: 20px;
+}
+
+.logo-title-p {
+  font-size: 14px; 
+  color: #74728F;
+}
+
+.breadCrumps-link {
+  text-decoration: none;
+}
+
+.img-logo {
+  height: 4rem !important;
+  width: 4rem !important;
+  display: inline-block;
+  margin-left: 2rem !important;
+}
+
+.user-pic {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.payment-display p {
+  color: #74728F;
+  font-size: 0.8rem; 
+}
+
+.payment-display h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.payment-display-button:hover {
+  width: 10rem;
+  background-color: #FE8F02 !important;
+  color: #FFF !important;
+  border: "2px solid #FE8F02" !important;
+}
+
+.payment-display-button-active:hover {
+  box-shadow: 0px 15px 20px rgba(254, 143, 2, 0.6) !important;
+  color: #fff !important;
+}
+
+.model-header h2 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+}
+
+.model-header p {
+  font-size: 1rem !important;
+  color: #74728F !important;
+}
+
+.model-form p {
+  text-transform: uppercase !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: #74728F !important;
+}
+
+.inner-form {
+  border: 3px solid #74728F;
+  width: 100% !important;
+  padding: 0.5rem 1rem;
+}
+
+.inner-form label {
+  color: #74728F !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem;
+} 
+
+.inner-form input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.inner-form-count input {
+  border: none;
+  background-color: transparent;
+}
+
+.inner-form-count input::placeholder {
+  color: #D1D0DA;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.inner-form-count button {
+  background-color: transparent;
+  border: none;
+}
+
+.outer-form input {
+  width: 100% !important;
+  padding: 1.2rem;
+  border: 3px solid #74728F;
+  margin-top: 1rem;
+}
+
+.text-form p {
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+}
+
+.text-form span {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
+.modal-form-btn {
+  background-color: #FE8F02 !important;
+  color: #FFF;
+  font-weight: 600;
+  width: 10rem;
+  padding: 1rem 1rem !important;
+  border: none !important;
+  outline: none;
+}
+
+.modal-form-btn:hover {
+  box-shadow: 0px 15px 20px rgba(254, 143, 2, 0.6) !important;
+}
+
+.search-form {
+  background-color: #fff !important;
+  border: 3px solid #DEE2E6;
+  width: 100% !important;
+  padding: 0.5rem 1rem;
+}
+
+.search-form input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: 100%;
+}
+
+.search-form input::placeholder {
+  color: #A3A1B5;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.list-queue {
+ /*  background-color: #F9FAFD !important; */
+}
+
+.list-queue-data p {
+  font-size: 0.8rem;
+  color: #191444;
+  text-align: center !important;
+}
+
+.list-queue-header,.current-serving-header {
+  background-color: #fff !important;
+  border: 1px solid rgba(163, 161, 181, 0.3);
+}
+
+.list-queue-header h3,.current-serving-header h3 {
+  font-size: 0.9rem !important;
+  color: #74728F;
+  text-transform: uppercase;
+  font-weight: 700 !important;
+}
+
+.list-queue-header p,.current-serving-header p {
+  font-size: 0.8rem !important;
+  color: #74728F;
+  text-transform: uppercase;
+  font-weight: 400 !important;
+}
+
+.list-queue-tableHeader, .current-serving-tableHeader {
+  background-color: #fff !important;
+  border: 1px solid rgba(163, 161, 181, 0.3);
+  padding: 0.3rem ;
+}
+
+.table-body-data {
+  background-color: #fff !important;
+  width: 100% !important;
+  margin-left: 0rem !important; 
+}
+
+.list-queue-data button {
+  padding: 1rem 1rem;
+  background-color: transparent !important;
+}
+
+.list-queue-tableFooter {
+  background-color: #fff !important;
+}
+
+.current-serving-body {
+  background-color: #fff !important;
 }
