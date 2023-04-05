@@ -10,7 +10,7 @@ p,h1,h2,h3 {
 }
 
 body {
-  background-color:  #E5E5E5 !important;
+  background-color:  #f2f0f0 !important;
   font-family: "Inter", sans-serif !important;
   
 }
@@ -25,7 +25,7 @@ header {
 
 .web-icon-large {
   font-size: 3rem;
-  color: #74728F;
+  color: #D1D0DA;
 }
 
 .logo-title-h {
@@ -220,7 +220,7 @@ header {
 
 .list-queue-tableBody {
   overflow-y: scroll;
-  height: 32rem !important;
+  height: 33rem !important;
 }
 
 .list-queue-tableBody::-webkit-scrollbar {
@@ -263,4 +263,16 @@ header {
 
 .data-footer-icon {
   stroke-width: 1 !important;
+}
+
+.data-footer-msg p {
+  font-weight: 600 !important;
+  color: #191444;
+  line-height: 1.3rem !important;
+}
+
+.data-footer-msg span {
+  color: #74728F !important;
+  font-weight: 400 !important;
+  font-size: 0.9rem;
 }

@@ -13,6 +13,7 @@ const DisplayPayment = () => {
     const [mobileNo, setMobileNo] = useState('');
     const [name, setName] = useState('');
     const [count, setCount] = useState(1);
+    const [num, setNum] = useState(0);
     const [isDisabled, setDisabled] = useState(true);
     const [isActive, setIsActive] = useState(false);
 
@@ -32,12 +33,18 @@ const DisplayPayment = () => {
          } 
     }
 
-    // submit the data on form to mongodb atlas
-    const handleSubmit = async (e) => {
-       e.preventDefault();
 
+   
+    // submit the data on form to mongodb atlas
+    const handleSubmit = async (e, idNumber) => {
+       e.preventDefault();
+       setNum( num + 1 )
+       window.localStorage.setItem("idNum:", num);
+
+       console.log(num + "my num")
        try {
          const response = await axios.post(`${process.env.REACT_APP_API_URL}/queue/addOrder`, {
+              queueID: ``, 
               mobileNo: mobileNo,
               personCount: count,
               name: name,    
@@ -63,7 +70,7 @@ const DisplayPayment = () => {
            setName('');
 
            setShow(false);
-     
+   
         }
 
 

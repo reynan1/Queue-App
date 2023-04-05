@@ -4,13 +4,13 @@ const addQueue = async (requestBody) => {
     try {
       
       // get fieldname  
-      const { mobileNo, personCount, name } = requestBody;
+      const {queueID, mobileNo, personCount, name } = requestBody;
 
       // convert it to array keys
       const fieldNames = Object.keys(requestBody)
       
       // initialize fieldname list
-      const fieldNameList = ['mobileNo', 'personCount', 'name'];
+      const fieldNameList = ['queueID','mobileNo', 'personCount', 'name'];
 
       // check if the fieldname is equal to database fieldname  
       const checkFieldNameList = fieldNames.every(fieldName => fieldNameList.includes(fieldName));  
@@ -46,6 +46,7 @@ const addQueue = async (requestBody) => {
       }
 
       let newQueue = new Queue({
+            queueID: queueID,
             mobileNo: mobileNo,
             personCount: personCount,
             name: name, 
@@ -61,6 +62,7 @@ const addQueue = async (requestBody) => {
       } else {
         return {
             message: 'Queue is successfully created',
+            users: addQueue,
             result: true
         }
       }

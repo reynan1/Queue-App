@@ -7,6 +7,7 @@ import { BsArrowRight } from "react-icons/bs"
 import { HiInformationCircle } from 'react-icons/hi';
 import { RxSpeakerLoud } from 'react-icons/rx';
 import { BsCheck2 } from 'react-icons/bs'
+import { CgToggleSquareOff } from 'react-icons/cg';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const ListQueue = () => {
@@ -143,8 +144,15 @@ const ListQueue = () => {
                            </button>
                        </div>
                    </div>
+                   <div className='mt-5 d-flex justify-content-between'>
+                       <div className='data-footer-msg'>
+                          <p>Auto-serve next queue?</p>
+                          <span>Next queue to be serve:{data.queueID}</span>      
+                       </div>         
+                       <CgToggleSquareOff className='web-icon-large'/> 
+                   </div>
                </div>
-              ) : (<h1 style={{ fontSize: "1.5rem", textAlign: "center", color: "#A3A1B5", }}> No serving queue id number </h1>)
+              ) : (<h1 key={1} style={{ fontSize: "1.5rem", textAlign: "center", color: "#A3A1B5", }}> No serving queue id number </h1>)
             ) 
          } ))
       } catch (error) {
@@ -208,7 +216,7 @@ const ListQueue = () => {
                 <MDBRow className="table-body-data p-3 mt-3"> 
                   <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='3'>
                     <div>
-                       <p style={{ fontSize: '1.5rem', fontWeight: 700 }}>A0{index+1}</p>
+                       <p style={{ fontSize: '1.5rem', fontWeight: 700 }}>{`A0${index+1}`}</p>
                     </div>
                   </MDBCol>
                   <MDBCol className="list-queue-data" md='3'>
