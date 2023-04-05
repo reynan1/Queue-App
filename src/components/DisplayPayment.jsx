@@ -13,7 +13,6 @@ const DisplayPayment = () => {
     const [mobileNo, setMobileNo] = useState('');
     const [name, setName] = useState('');
     const [count, setCount] = useState(1);
-    const [num, setNum] = useState(0);
     const [isDisabled, setDisabled] = useState(true);
     const [isActive, setIsActive] = useState(false);
 
@@ -34,21 +33,26 @@ const DisplayPayment = () => {
     }
 
 
-   
     // submit the data on form to mongodb atlas
-    const handleSubmit = async (e, idNumber) => {
+    const handleSubmit = async (e) => {
        e.preventDefault();
-       setNum( num + 1 )
-       window.localStorage.setItem("idNum:", num);
 
-       console.log(num + "my num")
+       let idNumber = Number(localStorage.getItem('idNumber')) || 0;
+
+       localStorage.setItem('myNumber', idNumber + 1);
+
+       console.log(idNumber + " id number data ");
+      
        try {
+
          const response = await axios.post(`${process.env.REACT_APP_API_URL}/queue/addOrder`, {
-              queueID: ``, 
+              queueID:'',
               mobileNo: mobileNo,
               personCount: count,
               name: name,    
          });
+
+    
 
          if(response.data.result === false) {
             Swal.fire({
@@ -59,6 +63,7 @@ const DisplayPayment = () => {
         }
 
         if(response.status === 200 && response.data.result === true) {
+
            Swal.fire({
              title: 'Successfully Order',
              icon: 'success',

@@ -9,23 +9,30 @@ import { RxSpeakerLoud } from 'react-icons/rx';
 import { BsCheck2 } from 'react-icons/bs'
 import { CgToggleSquareOff } from 'react-icons/cg';
 import Dropdown from 'react-bootstrap/Dropdown';
+import SearchForm from "./searchForm";
+import ListData from './ListData';
 
 const ListQueue = () => {
   const [queueData, setQueueData] = useState([]);
   const [getServeNow, setGetServeNow] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const [userId, setUserId] = useState();
   const [isServe, setIsServe] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [idNumber, setIdNumber] = useState([]);
   
-  console.log(isDisabled  + " disable value");
+
+  const handleSearchForm = () => {
+    console.log(searchValue + " my Data ");
+    setQueueData(queueData.filter((item) => item.name === searchValue ||  item.mobileNo === searchValue ))
+    console.log(queueData)
+  }
 
   const serveDone = async (e,userID) => {
     e.preventDefault();
 
     try {
 
-     console.log(userID + " my id user ");
 
      const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serveDone/${userID}`, {
         serve: false,
@@ -46,11 +53,7 @@ const ListQueue = () => {
           icon: 'success',
           text: `serve is done`
         })
-
-       
       }
-
-    
 
     } catch(error) {
       console.log(`data result: ${error}`);
@@ -69,10 +72,8 @@ const ListQueue = () => {
 
         if(response.data) {
           setDisabled(response.data.serve);
-          console.log("data server: " + isDisabled);
         } else {
           setDisabled(false);
-          console.log("data server: " + isDisabled);
         }
           
         const serveNowArray = [response.data];
@@ -152,7 +153,7 @@ const ListQueue = () => {
                        <CgToggleSquareOff className='web-icon-large'/> 
                    </div>
                </div>
-              ) : (<h1 key={1} style={{ fontSize: "1.5rem", textAlign: "center", color: "#A3A1B5", }}> No serving queue id number </h1>)
+              ) : (<h1 key={1} style={{ fontSize: "1.5rem", textAlign: "center", color: "#A3A1B5", }}> Nothing Found</h1>)
             ) 
          } ))
       } catch (error) {
@@ -163,110 +164,53 @@ const ListQueue = () => {
   chechServeTrue();
   }, [])
 
+     // click the fetch queue data
+     const handleClick = async (e, data, idNumber) => {
+      e.preventDefault();
+
+
+      try {
+
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serve/${data._id}`, {
+          queueID: idNumber,
+          serve: true,
+        })  
+        
+        if(response.data.result === false) {
+          Swal.fire({
+             title: 'Server Error',
+             icon: 'error',
+             text: `server error`,
+          })
+      }
+
+      if(response.status === 200 && response.data.result === true) {
+         Swal.fire({
+           title: 'Queue id number is now serve',
+           icon: 'success',
+           text: `serve is now ongoing`
+         })
+
+  
+        }
+      } catch(error) {
+        console.log(error);
+      }
+     
+    } 
+    console.log(queueData); 
+
+    
   // fetch the queue data
-  const fetchData = async (isDisabled) => {
+  const fetchData = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/queue/list`, {
         headers: {
           Accept: 'application/json',
         },
       }); 
-
-
-        // click the fetch queue data
-      const handleClick = async (e, data, idNumber) => {
-        e.preventDefault();
-
-        console.log(idNumber + "my id number");
-        try {
-
-          const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serve/${data._id}`, {
-            queueID: idNumber,
-            serve: true,
-          })  
-          
-          if(response.data.result === false) {
-            Swal.fire({
-               title: 'Server Error',
-               icon: 'error',
-               text: `server error`,
-            })
-        }
-
-        if(response.status === 200 && response.data.result === true) {
-           Swal.fire({
-             title: 'Queue id number is now serve',
-             icon: 'success',
-             text: `serve is now ongoing`
-           })
-
-    
-          }
-        } catch(error) {
-          console.log(error);
-        }
-       
-      } 
-
-       setQueueData(response.data.map((data, index) => {
-        
-         return (
-          
-              <div key={data._id}>
-                <MDBRow className="table-body-data p-3 mt-3"> 
-                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='3'>
-                    <div>
-                       <p style={{ fontSize: '1.5rem', fontWeight: 700 }}>{`A0${index+1}`}</p>
-                    </div>
-                  </MDBCol>
-                  <MDBCol className="list-queue-data" md='3'>
-                        <div className=''>
-                            <div>
-                                <BiUser />
-                                <span className='list-queue-data-span'>{data.name}</span>
-                            </div> 
-                            <div>
-                                <BiMobile />
-                                <span className='list-queue-data-span'>+(63) {data.mobileNo}</span>
-                            </div> 
-                            <div>
-                                <BiGroup />
-                                <span className='list-queue-data-span'>{data.personCount}</span>
-                            </div> 
-                        </div>
-                  </MDBCol>
-                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='3'>
-                        <span style={{ border: "1px solid #191444", padding: "0.5rem 1rem", fontSize: "0.8rem", borderRadius: "5px" }}>Walk in</span>
-                  </MDBCol>
-                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='1'>
-                       <Dropdown align="end" drop="up">
-                          <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={isDisabled}>
-                             <BiDotsVerticalRounded  style={{ color: '#A3A1B5', }}/>
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu >
-                            <Dropdown.Item href="#/action-1">Send SMS Notification</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Edit Queue</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3" style={{ color: "red" }}>Remove Queue</Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>    
-                  </MDBCol>
-                  <MDBCol className="list-queue-data  d-flex justify-content-center align-items-center" md='1'>
-
-                    
-                      <button 
-                        className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
-                        onClick={ (e) => handleClick(e, data, `A0${index+1}`)}
-                        disabled={isDisabled ? true : false}
-                        >
-                        <BsArrowRight style={{ color: '#A3A1B5', }}/>
-                      </button>
-                  </MDBCol>
-                </MDBRow>
-              </div>
-       
-         )
-       }))
+      
+       setQueueData(response.data);
     } catch(error) {
       console.log(`Fetch Data Error: ${error}`);
     }
@@ -274,12 +218,14 @@ const ListQueue = () => {
   }
 
   useEffect(() => {
-    fetchData(isDisabled);
-  }, [isDisabled]);
+    fetchData();
+  }, [isDisabled, searchValue ]);
 
   return (
-    <div className="mt-4">
-      <MDBRow className="">
+    <div >
+            
+      <SearchForm handleSearchForm={handleSearchForm} handleData={setSearchValue}/>
+      <MDBRow className="mt-4">
         <MDBCol className="list-queue" md='8'>
             <div className=" p-3  list-queue-header">
               <h3>on-going queue</h3>
@@ -306,11 +252,11 @@ const ListQueue = () => {
             </div>
 
             <div className='list-queue-tableBody mt-0'>
-             {queueData}
+               <ListData queueData={queueData} handleClick={handleClick} isDisabled={isDisabled} idNumber={idNumber}/>
             </div>
             <div className='list-queue-tableFooter p-3 mt-3 d-flex justify-content-between'>
                 <span style={{fontWeight: "400", fontSize: "1rem", color: "#191444",}}>Total on-going queues</span>
-                <span style={{fontWeight: "700", fontSize: "1rem", color: "#191444",}}>{queueData.length} Queues</span>
+                <span style={{fontWeight: "700", fontSize: "1rem", color: "#191444",}}>{queueData ? queueData.length : 0} Queues</span>
             </div>
         </MDBCol>
         <MDBCol className="current-serving" size='6'  md='4'>
@@ -324,8 +270,7 @@ const ListQueue = () => {
             </div>
             <div className='mt-3 p-3 current-serving-body'>
                 <div className='current-serving-body-user'>
-                     { getServeNow }       
-                      { console.log(getServeNow) }
+                     { getServeNow  }       
                 </div>
             </div>
         </MDBCol>
