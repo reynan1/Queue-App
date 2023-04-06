@@ -193,6 +193,12 @@ header {
   text-align: center !important;
 }
 
+
+.list-queue-data button:disabled {
+  background-color: #F3F6FC !important;
+  border: none !important;
+}
+
 .list-queue-data-span {
   font-size: 0.8rem !important;
   font-weight: 400;
