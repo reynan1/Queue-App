@@ -75,7 +75,7 @@ const DisplayPayment = () => {
            setName('');
 
            setShow(false);
-   
+           window.location.reload();
         }
 
 

@@ -4,7 +4,7 @@ import { BsArrowRight } from "react-icons/bs"
 import Dropdown from 'react-bootstrap/Dropdown';
 
 
-const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
+const ListData = ({ queueData, handleClick, isDisabled }) => {
 
     return (
         <>      
@@ -42,7 +42,7 @@ const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
                  </MDBCol>
                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='1'>
                       <Dropdown align="end" drop="up">
-                         <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={data.serve ? true : false}>
+                         <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}}  disabled={data.serve ? true : false}>
                             <BiDotsVerticalRounded  style={{ color: '#A3A1B5', }}/>
                          </Dropdown.Toggle>
 
@@ -54,11 +54,10 @@ const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
                        </Dropdown>    
                  </MDBCol>
                  <MDBCol className="list-queue-data  d-flex justify-content-center align-items-center" md='1'>
-
-                   
                      <button 
-                       className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
-                       onClick={ (e) => handleClick(e, data, `A0${index+1}`)}
+                       className='' 
+                       style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem", borderRadius: '5px'}} 
+                       onClick={ (e) => handleClick(e, data)}
                        disabled={isDisabled ? true : false}
                        >
                        <BsArrowRight style={{ color: '#A3A1B5', }}/>
