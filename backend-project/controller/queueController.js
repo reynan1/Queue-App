@@ -2,6 +2,9 @@ const Queue = require('../models/Queue');
 
 const addQueue = async (requestBody) => {
     try {
+
+      // count the user and add to queueID 
+      let arrayUser = [];
       
       // get fieldname  
       const {queueID, mobileNo, personCount, name } = requestBody;
@@ -60,11 +63,22 @@ const addQueue = async (requestBody) => {
             result: false,
          } 
       } else {
-        return {
-            message: 'Queue is successfully created',
-            users: addQueue,
-            result: true
-        }
+        
+        // count the lenth of user DB and update queueID 
+        const dataUser =  await Queue.find({});
+
+        return Queue.findByIdAndUpdate({_id: addQueue._id },{ queueID : `A0${dataUser.length}` }).then((users, error) => {
+         if(error) {
+            return {
+               message: 'Queue not successfully created',
+               result: false,
+            } 
+         } else {
+            return {
+               result: true,
+            }
+         }
+        } )
       }
 
     } catch(error) {
@@ -92,7 +106,6 @@ const serveQueue = async (queueID, reqBody) => {
 
        console.log(reqBody);
       const result = await Queue.findByIdAndUpdate(queueID, {
-            queueID: reqBody.queueID,
             serve: reqBody.serve,
        })
 

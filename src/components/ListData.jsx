@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Swal from 'sweetalert2';
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { BiUser, BiMobile, BiGroup, BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs"
-import { HiInformationCircle } from 'react-icons/hi';
-import { RxSpeakerLoud } from 'react-icons/rx';
-import { BsCheck2 } from 'react-icons/bs'
-import { CgToggleSquareOff } from 'react-icons/cg';
 import Dropdown from 'react-bootstrap/Dropdown';
-import SearchForm from "./searchForm";
+
 
 const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
 
@@ -25,7 +18,7 @@ const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
                <MDBRow className="table-body-data p-3 mt-3"> 
                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='3'>
                    <div>
-                      <p style={{ fontSize: '1.5rem', fontWeight: 700 }}>{  `A0${index+1}`}</p>
+                      <p style={{ fontSize: '1.5rem', fontWeight: 700 }}>{ data.queueID }</p>
                    </div>
                  </MDBCol>
                  <MDBCol className="list-queue-data" md='3'>
@@ -49,7 +42,7 @@ const ListData = ({ queueData, handleClick, isDisabled, idNumber }) => {
                  </MDBCol>
                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='1'>
                       <Dropdown align="end" drop="up">
-                         <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={isDisabled}>
+                         <Dropdown.Toggle className='' style={{ backgroundColor: "transparent", border: "2px solid #A3A1B5", width: "3.2rem"}} id={idNumber}  disabled={data.serve ? true : false}>
                             <BiDotsVerticalRounded  style={{ color: '#A3A1B5', }}/>
                          </Dropdown.Toggle>
 

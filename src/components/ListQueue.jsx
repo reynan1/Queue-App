@@ -21,13 +21,13 @@ const ListQueue = () => {
   const [isDisabled, setDisabled] = useState(false);
   const [idNumber, setIdNumber] = useState([]);
   
-
+  // search the form ID
   const handleSearchForm = () => {
-    console.log(searchValue + " my Data ");
-    setQueueData(queueData.filter((item) => item.name === searchValue ||  item.mobileNo === searchValue ))
-    console.log(queueData)
+    setQueueData(queueData.filter((item) => item.name === searchValue ||  item.mobileNo === searchValue || item.queueID === searchValue ))
   }
 
+
+  // update the serve to false and serveDone to true
   const serveDone = async (e,userID) => {
     e.preventDefault();
 
@@ -164,15 +164,13 @@ const ListQueue = () => {
   chechServeTrue();
   }, [])
 
-     // click the fetch queue data
+     // update servefield to false to true and display to current serving container 
      const handleClick = async (e, data, idNumber) => {
       e.preventDefault();
-
 
       try {
 
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/queue/serve/${data._id}`, {
-          queueID: idNumber,
           serve: true,
         })  
         
@@ -200,7 +198,7 @@ const ListQueue = () => {
     } 
     console.log(queueData); 
 
-    
+
   // fetch the queue data
   const fetchData = async () => {
     try {
@@ -220,6 +218,7 @@ const ListQueue = () => {
   useEffect(() => {
     fetchData();
   }, [isDisabled, searchValue ]);
+  
 
   return (
     <div >
