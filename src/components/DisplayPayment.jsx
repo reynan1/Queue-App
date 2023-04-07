@@ -37,16 +37,9 @@ const DisplayPayment = () => {
     const handleSubmit = async (e) => {
        e.preventDefault();
 
-       let idNumber = Number(localStorage.getItem('idNumber')) || 0;
-
-       localStorage.setItem('myNumber', idNumber + 1);
-
-       console.log(idNumber + " id number data ");
-      
        try {
 
          const response = await axios.post(`${process.env.REACT_APP_API_URL}/queue/addOrder`, {
-              queueID:'',
               mobileNo: mobileNo,
               personCount: count,
               name: name,    
@@ -78,10 +71,6 @@ const DisplayPayment = () => {
            window.location.reload();
         }
 
-
-         console.log(response);
-
-         console.log(response.data)
        } catch(error) {
          console.log(error);
        }

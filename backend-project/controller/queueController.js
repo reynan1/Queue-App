@@ -2,18 +2,15 @@ const Queue = require('../models/Queue');
 
 const addQueue = async (requestBody) => {
     try {
-
-      // count the user and add to queueID 
-      let arrayUser = [];
-      
+    
       // get fieldname  
-      const {queueID, mobileNo, personCount, name } = requestBody;
+      const { mobileNo, personCount, name } = requestBody;
 
       // convert it to array keys
       const fieldNames = Object.keys(requestBody)
       
       // initialize fieldname list
-      const fieldNameList = ['queueID','mobileNo', 'personCount', 'name'];
+      const fieldNameList = ['mobileNo', 'personCount', 'name'];
 
       // check if the fieldname is equal to database fieldname  
       const checkFieldNameList = fieldNames.every(fieldName => fieldNameList.includes(fieldName));  
@@ -49,7 +46,6 @@ const addQueue = async (requestBody) => {
       }
 
       let newQueue = new Queue({
-            queueID: queueID,
             mobileNo: mobileNo,
             personCount: personCount,
             name: name, 
@@ -66,8 +62,13 @@ const addQueue = async (requestBody) => {
         
         // count the lenth of user DB and update queueID 
         const dataUser =  await Queue.find({});
+        
+        // set 3 (000) value  if the dataUserlength is 1 (length 1) add 001 and if length is 10 (length 2) add 010 and if 100 (length 3) no 0 added 
+        const setCustomizeValue = (nr, n, str) => {
+            return Array(n-String(nr).length+1).join(str||'0')+nr;
+         }
 
-        return Queue.findByIdAndUpdate({_id: addQueue._id },{ queueID : `A0${dataUser.length}` }).then((users, error) => {
+        return Queue.findByIdAndUpdate({_id: addQueue._id },{ queueID : `A${setCustomizeValue(dataUser.length,3)}` }).then((users, error) => {
          if(error) {
             return {
                message: 'Queue not successfully created',

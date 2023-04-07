@@ -113,7 +113,6 @@ const ListQueue = () => {
       }
      
     } 
-    console.log(queueData); 
 
 
   // fetch the queue data
