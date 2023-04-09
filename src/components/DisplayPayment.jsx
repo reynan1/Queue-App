@@ -15,6 +15,7 @@ const DisplayPayment = () => {
     const [count, setCount] = useState(1);
     const [isDisabled, setDisabled] = useState(true);
     const [isActive, setIsActive] = useState(false);
+    
 
 
     const handleOpen = () => setShow(true);
@@ -32,6 +33,19 @@ const DisplayPayment = () => {
          } 
     }
 
+    // mobile number formatter
+    const formatPhoneNumber = (value) => {
+         if (!value) return value;
+         const phoneNumber = value.replace(/[^\d]/g, '');  
+         const phoneNumberLength = phoneNumber.length;
+         if (phoneNumberLength < 4) return phoneNumber;
+         if (phoneNumberLength < 10) {
+         return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+         }
+
+         return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3,6)}-${phoneNumber.slice(6,10)}`;
+    }
+
 
     // submit the data on form to mongodb atlas
     const handleSubmit = async (e) => {
@@ -44,8 +58,6 @@ const DisplayPayment = () => {
               personCount: count,
               name: name,    
          });
-
-    
 
          if(response.data.result === false) {
             Swal.fire({
@@ -121,10 +133,10 @@ const DisplayPayment = () => {
                              <div>
                              <span> (+63) </span>
                              <input 
-                                type="text" 
-                                value={mobileNo}
-                                placeholder=' 000-000-000'
-                                onChange={(e) => setMobileNo(e.target.value)} 
+                                type = "text" 
+                                value = {mobileNo}
+                                placeholder = ' 000-000-0000'
+                                onChange = {(e) => setMobileNo(formatPhoneNumber(e.target.value))} 
                                 />
                                 </div>
                           </div>

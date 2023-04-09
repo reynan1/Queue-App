@@ -200,9 +200,10 @@ header {
 }
 
 .list-queue-data-span {
-  font-size: 0.8rem !important;
+  font-size: 0.9rem !important;
   font-weight: 400;
   margin-left: 0.5rem !important;
+  color:#191444 !important;
 }
 
 .list-queue-header,.current-serving-header {

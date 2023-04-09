@@ -37,8 +37,11 @@ const ListData = ({ queueData, handleClick, isDisabled }) => {
                            </div> 
                        </div>
                  </MDBCol>
-                 <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='3'>
-                       <span style={{ border: "1px solid #191444", padding: "0.5rem 1rem", fontSize: "0.8rem", borderRadius: "5px" }}>Walk in</span>
+                 <MDBCol className="list-queue-data d-flex justify-content-center align-items-center"   md='3'>
+                    <div className='d-flex flex-column'>
+                       <span style={{ border: "1px solid #191444", padding: "0.3rem", fontSize: "0.8rem", borderRadius: "5px", textAlign: "center" }}>Walk in</span>
+                       <span style={{ fontWeight: "700", padding: "0.5rem 1rem", fontSize: "0.9rem", borderRadius: "5px" }}>12:41 PM</span>
+                    </div>
                  </MDBCol>
                  <MDBCol className="list-queue-data d-flex justify-content-center align-items-center" md='1'>
                       <Dropdown align="end" drop="up">
